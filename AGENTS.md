@@ -67,5 +67,3 @@ inside it — the table below routes you to the right one.
   it structurally.
 - Commits: imperative, present-tense subject lines ("Add the merch page");
   one task/feature per commit where practical.
-
-

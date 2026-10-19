@@ -114,10 +114,6 @@ They cover: content of the hand-written pages, validity of
 
 - **Photo of the "Anims" t-shirt** on `/merch/` — currently a placeholder
   box (`src/merch/index.html`), not connected to any file.
-- **GitHub Pages → Settings → Pages → Build and deployment → Source →
-  "GitHub Actions"** (not "Deploy from a branch"). A one-time manual step,
-  required before the deploy workflow works.
-- This branch (`site-redesign`) is not yet merged to `main`.
 
 ## Deployment
 
