@@ -1,65 +1,71 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#11110f">
-  <meta name="description" content="The official website of [BAND NAME]. Music, shows, and news.">
-  <title>[BAND NAME] — Official Site</title>
+  <meta name="theme-color" content="#aed4ea">
+  <meta name="description" content="Web oficial de Mevallar. Pop rock español desde Barcelona. Música, conciertos y novedades.">
+  <title>Mevallar — Web Oficial</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="topbar">
-    <a class="wordmark" href="#home">[BAND NAME]</a>
-    <nav aria-label="Main navigation">
-      <a href="#music">Music</a>
-      <a href="#shows">Shows</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
+    <a class="wordmark" href="/">Mevallar</a>
+    <nav aria-label="Navegación principal">
+      <a class="cloud-link" href="#home">Inicio</a>
+      <a class="cloud-link" href="/conciertos/">Conciertos</a>
+      <a class="cloud-link" href="/merch/">Merch</a>
+      <a class="cloud-link" href="/links/">Links</a>
     </nav>
   </header>
 
   <main>
     <section class="hero" id="home">
       <div class="hero-copy">
-        <p class="eyebrow">[YOUR CITY] · EST. [YEAR]</p>
-        <h1>[BAND<br>NAME]</h1>
-        <p class="intro">[A short line that captures your sound.]</p>
-        <a class="button" href="#music">Listen now <span aria-hidden="true">↘</span></a>
-      </div>
-      <div class="hero-art" role="img" aria-label="Abstract band artwork">
-        <div class="sun"></div><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-        <span class="art-caption">[LATEST RELEASE] / [YEAR]</span>
-      </div>
-      <a class="scroll-cue" href="#music">SCROLL TO EXPLORE ↓</a>
-    </section>
-
-    <section class="section music" id="music">
-      <div class="section-heading"><p class="eyebrow">01 / SOUND</p><h2>Turn it up.</h2></div>
-      <div class="music-card">
-        <div class="cover"><span>[ALBUM<br>ART]</span></div>
-        <div class="music-info"><p class="eyebrow">NEW RELEASE · [YEAR]</p><h3>[RELEASE TITLE]</h3><p>[A sentence about this release.]</p>
-          <div class="links"><a href="[SPOTIFY LINK]">Spotify ↗</a><a href="[BANDCAMP LINK]">Bandcamp ↗</a><a href="[YOUTUBE LINK]">YouTube ↗</a></div>
+        <p class="eyebrow">De "la meva llar" · pop rock</p>
+        <h1>MEVALLAR</h1>
+        <p class="intro">Mevallar nace en Barcelona como punto de encuentro entre cuatro músicos de distintos rincones del país que encuentran en la música su hogar compartido.</p>
+        <div class="hero-links">
+          <a class="cloud-link cloud-link--accent" href="https://open.spotify.com/artist/1XJAfJmBUaSlnuha4jlX3F">Spotify</a>
+          <a class="cloud-link" href="https://www.instagram.com/mevallar_/">Instagram</a>
+          <a class="cloud-link" href="https://www.youtube.com/@Mevallar">YouTube</a>
+          <a class="cloud-link" href="/conciertos/">Conciertos</a>
+          <a class="cloud-link" href="/merch/">Merch</a>
+          <a class="cloud-link" href="/links/">Links</a>
         </div>
       </div>
-    </section>
-
-    <section class="section shows" id="shows">
-      <div class="section-heading"><p class="eyebrow">02 / LIVE</p><h2>Come say hi.</h2></div>
-      <div class="show-row"><span class="date">[DD MMM]</span><span class="venue">[VENUE NAME] <small>[CITY]</small></span><a href="[TICKETS LINK]">Tickets ↗</a></div>
-      <div class="show-row"><span class="date">[DD MMM]</span><span class="venue">[VENUE NAME] <small>[CITY]</small></span><a href="[TICKETS LINK]">Tickets ↗</a></div>
-      <p class="note">No shows listed? Follow us for announcements.</p>
+      <div class="hero-art" role="img" aria-label="Casa bajo un cielo con nubes">
+        <div class="cloud cloud-one"></div>
+        <div class="cloud cloud-two"></div>
+        <div class="cloud cloud-three"></div>
+        <div class="skyline">
+          <div class="house house-small"><span class="roof"></span><span class="body"></span></div>
+          <div class="house house-main"><span class="roof"></span><span class="chimney"></span><span class="body"><span class="window"></span><span class="door"></span></span></div>
+          <div class="house house-small"><span class="roof"></span><span class="body"></span></div>
+        </div>
+      </div>
+      <a class="scroll-cue" href="#about">DESLIZA PARA EXPLORAR ↓</a>
     </section>
 
     <section class="section about" id="about">
-      <p class="eyebrow">03 / THE BAND</p><h2>A little loud.<br>A lot of heart.</h2>
-      <p class="bio">[Write a short band bio here: where you’re from, who’s in the band, and what people can expect at a show. Keep it personal and in your own voice.]</p>
+      <p class="eyebrow">01 / EL GRUPO</p>
+      <h2>Mevallar, de<br>"la meva llar".</h2>
+      <p class="bio">Mevallar nace en Barcelona como punto de encuentro entre cuatro músicos de distintos rincones del país que encuentran en la música su hogar compartido.</p>
     </section>
-
-    <section class="contact" id="contact"><p class="eyebrow">04 / GET IN TOUCH</p><h2>Let’s make<br>some noise.</h2><a class="button" href="mailto:[YOUR EMAIL]">Booking & enquiries <span aria-hidden="true">↗</span></a></section>
   </main>
 
-  <footer><a class="wordmark" href="#home">[BAND NAME]</a><div class="socials"><a href="[INSTAGRAM LINK]">Instagram ↗</a><a href="[TIKTOK LINK]">TikTok ↗</a><a href="[YOUTUBE LINK]">YouTube ↗</a></div><small>© <span id="year">2026</span> [BAND NAME]</small></footer>
+  <footer class="site-footer">
+    <div class="flower flower-1"></div><div class="flower flower-2"></div><div class="flower flower-3"></div>
+    <div class="flower flower-4"></div><div class="flower flower-5"></div><div class="flower flower-6"></div>
+    <a class="wordmark" href="/">Mevallar</a>
+    <div class="socials">
+      <a class="cloud-link" href="https://www.instagram.com/mevallar_/">Instagram</a>
+      <a class="cloud-link" href="https://open.spotify.com/artist/1XJAfJmBUaSlnuha4jlX3F">Spotify</a>
+      <a class="cloud-link" href="https://www.youtube.com/@Mevallar">YouTube</a>
+      <a class="cloud-link" href="mailto:mevallargrupo@gmail.com">Email</a>
+    </div>
+    <small>© <span id="year">2026</span> Mevallar</small>
+  </footer>
   <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>
