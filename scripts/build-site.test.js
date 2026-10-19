@@ -2,6 +2,7 @@ const assert = require('node:assert/strict');
 const { test } = require('node:test');
 const fs = require('node:fs');
 const path = require('node:path');
+const { renderTemplate, splitUpcomingPast, formatDateDisplay, renderPosterHtml, renderLineupHtml, renderConciertoPage, renderCardHtml, renderCardsHtml, renderListingPage, build } = require('./build-site.js');
 
 const rootDir = path.join(__dirname, '..');
 
@@ -69,4 +70,126 @@ test('templates have the required tokens', () => {
   const listing = fs.readFileSync(path.join(rootDir, 'templates', 'conciertos-listing.html'), 'utf8');
   assert.match(listing, /{{\s*upcomingCards\s*}}/);
   assert.match(listing, /{{\s*pastCards\s*}}/);
+});
+
+test('renderTemplate substitutes known tokens', () => {
+  const result = renderTemplate('Hola {{name}}, bienvenido a {{place}}.', { name: 'Mevallar', place: 'Barcelona' });
+  assert.equal(result, 'Hola Mevallar, bienvenido a Barcelona.');
+});
+
+test('renderTemplate replaces missing tokens with empty string', () => {
+  const result = renderTemplate('{{a}}-{{b}}', { a: 'x' });
+  assert.equal(result, 'x-');
+});
+
+test('splitUpcomingPast separates by date relative to now', () => {
+  const concerts = [
+    { slug: 'past-one', date: '2026-01-01' },
+    { slug: 'future-one', date: '2026-12-31' },
+    { slug: 'today', date: '2026-06-15' }
+  ];
+  const { upcoming, past } = splitUpcomingPast(concerts, new Date('2026-06-15T12:00:00'));
+  assert.deepEqual(upcoming.map(c => c.slug), ['today', 'future-one']);
+  assert.deepEqual(past.map(c => c.slug), ['past-one']);
+});
+
+test('formatDateDisplay renders a Spanish long date', () => {
+  assert.equal(formatDateDisplay('2026-11-06'), '6 de noviembre de 2026');
+});
+
+test('renderPosterHtml returns an img tag when poster is set', () => {
+  const html = renderPosterHtml({ venue: 'Almo2Bar', poster: '/assets/posters/x.jpg' });
+  assert.match(html, /<img class="poster" src="\/assets\/posters\/x\.jpg" alt="Cartel de Almo2Bar">/);
+});
+
+test('renderPosterHtml returns a placeholder when poster is null', () => {
+  const html = renderPosterHtml({ venue: 'Fiesta Poblenou', poster: null });
+  assert.match(html, /poster-placeholder/);
+});
+
+test('renderLineupHtml joins the lineup with commas', () => {
+  assert.equal(renderLineupHtml(['La MudanzZa', 'Mevallar']), 'La MudanzZa, Mevallar');
+});
+
+test('renderConciertoPage fills in ticket and map links when present', () => {
+  const concert = {
+    venue: 'Almo2Bar', city: 'Barcelona', date: '2026-11-06', time: '20:30',
+    price: '10 €', lineup: ['La MudanzZa', 'Mevallar'], description: '',
+    poster: '/assets/posters/x.jpg',
+    mapUrl: 'https://maps.app.goo.gl/FFxGjQKQMovCCWCn9',
+    ticketUrl: 'https://entradium.com/events/la-mudanzza-de-la-mevallar'
+  };
+  const template = '{{venue}}|{{city}}|{{statusLabel}}|{{posterHtml}}|{{dateDisplay}}|{{timeDisplay}}|{{priceDisplay}}|{{lineupHtml}}|{{descriptionHtml}}|{{ticketLinkHtml}}|{{mapLinkHtml}}';
+  const result = renderConciertoPage(concert, template, true);
+  assert.match(result, /PRÓXIMO CONCIERTO/);
+  assert.match(result, /6 de noviembre de 2026/);
+  assert.match(result, / · 20:30h/);
+  assert.match(result, /href="https:\/\/entradium\.com\/events\/la-mudanzza-de-la-mevallar"/);
+  assert.match(result, /href="https:\/\/maps\.app\.goo\.gl\/FFxGjQKQMovCCWCn9"/);
+});
+
+test('renderConciertoPage omits ticket/map links when absent and labels past shows', () => {
+  const concert = {
+    venue: 'Fiesta Poblenou', city: 'Barcelona', date: '2026-09-18', time: null,
+    price: 'Entrada gratuita', lineup: ['Mevallar'], description: '',
+    poster: null, mapUrl: null, ticketUrl: null
+  };
+  const template = '{{venue}}|{{statusLabel}}|{{ticketLinkHtml}}|{{mapLinkHtml}}|{{timeDisplay}}';
+  const result = renderConciertoPage(concert, template, false);
+  assert.match(result, /CONCIERTO PASADO/);
+  assert.doesNotMatch(result, /cloud-link--accent/);
+  assert.doesNotMatch(result, /Cómo llegar/);
+});
+
+test('renderCardHtml links to tickets when upcoming with a ticketUrl', () => {
+  const concert = { slug: '20261106-almo2bar', venue: 'Almo2Bar', city: 'Barcelona', date: '2026-11-06', poster: null, ticketUrl: 'https://entradium.com/x' };
+  const html = renderCardHtml(concert, true);
+  assert.match(html, /Entradas/);
+  assert.match(html, /href="\/conciertos\/20261106-almo2bar\/"/);
+});
+
+test('renderCardHtml links to details when past or no ticketUrl', () => {
+  const concert = { slug: '20260918-poblenou', venue: 'Fiesta Poblenou', city: 'Barcelona', date: '2026-09-18', poster: null, ticketUrl: null };
+  const html = renderCardHtml(concert, false);
+  assert.match(html, /Ver detalles/);
+  assert.doesNotMatch(html, /Entradas/);
+});
+
+test('renderCardsHtml shows the empty message when there are no concerts', () => {
+  const html = renderCardsHtml([], true, 'No hay conciertos próximos.');
+  assert.match(html, /No hay conciertos próximos\./);
+});
+
+test('renderListingPage fills both sections', () => {
+  const upcoming = [{ slug: '20261106-almo2bar', venue: 'Almo2Bar', city: 'Barcelona', date: '2026-11-06', poster: null, ticketUrl: 'https://entradium.com/x' }];
+  const past = [{ slug: '20260918-poblenou', venue: 'Fiesta Poblenou', city: 'Barcelona', date: '2026-09-18', poster: null, ticketUrl: null }];
+  const template = '{{upcomingCards}}|{{pastCards}}';
+  const result = renderListingPage(upcoming, past, template);
+  assert.match(result, /Almo2Bar/);
+  assert.match(result, /Fiesta Poblenou/);
+});
+
+test('build() produces the full static site in dist/ and excludes build-only files', () => {
+  const distDir = build(rootDir);
+
+  assert.ok(fs.existsSync(path.join(distDir, 'index.html')));
+  assert.ok(fs.existsSync(path.join(distDir, 'style.css')));
+  assert.ok(fs.existsSync(path.join(distDir, 'merch', 'index.html')));
+  assert.ok(fs.existsSync(path.join(distDir, 'links', 'index.html')));
+  assert.ok(fs.existsSync(path.join(distDir, 'CNAME')));
+  assert.ok(fs.existsSync(path.join(distDir, 'conciertos', 'index.html')));
+  assert.ok(fs.existsSync(path.join(distDir, 'conciertos', '20261106-almo2bar', 'index.html')));
+
+  assert.equal(fs.existsSync(path.join(distDir, 'scripts')), false);
+  assert.equal(fs.existsSync(path.join(distDir, 'templates')), false);
+  assert.equal(fs.existsSync(path.join(distDir, 'data')), false);
+  assert.equal(fs.existsSync(path.join(distDir, 'src')), false);
+
+  const almo2barHtml = fs.readFileSync(path.join(distDir, 'conciertos', '20261106-almo2bar', 'index.html'), 'utf8');
+  assert.match(almo2barHtml, /Entradas/);
+  assert.match(almo2barHtml, /entradium\.com/);
+
+  const listingHtml = fs.readFileSync(path.join(distDir, 'conciertos', 'index.html'), 'utf8');
+  assert.match(listingHtml, /Almo2Bar/);
+  assert.match(listingHtml, /Parallel 62 Club/);
 });
