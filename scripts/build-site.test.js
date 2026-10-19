@@ -58,7 +58,7 @@ test('data/concerts.js has 5 valid concert entries', () => {
   const poblenou = concerts.find(c => c.slug === '20260918-poblenou');
   assert.equal(poblenou.price, 'Entrada gratuita');
   assert.equal(poblenou.mapUrl, null);
-  assert.equal(poblenou.poster, null);
+  assert.equal(poblenou.poster, '/assets/posters/20260918-poblenou.jpg');
 });
 
 test('templates have the required tokens', () => {
@@ -192,4 +192,9 @@ test('build() produces the full static site in dist/ and excludes build-only fil
   const listingHtml = fs.readFileSync(path.join(distDir, 'conciertos', 'index.html'), 'utf8');
   assert.match(listingHtml, /Almo2Bar/);
   assert.match(listingHtml, /Parallel 62 Club/);
+});
+
+test('build() excludes .DS_Store files from dist/', () => {
+  const distDir = build(rootDir);
+  assert.equal(fs.existsSync(path.join(distDir, 'assets', 'posters', '.DS_Store')), false);
 });

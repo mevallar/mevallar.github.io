@@ -97,6 +97,7 @@ function copyRecursiveSync(src, dest) {
   if (stat.isDirectory()) {
     fs.mkdirSync(dest, { recursive: true });
     for (const entry of fs.readdirSync(src)) {
+      if (entry === '.DS_Store') continue;
       copyRecursiveSync(path.join(src, entry), path.join(dest, entry));
     }
   } else {
