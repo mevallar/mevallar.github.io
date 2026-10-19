@@ -24,7 +24,7 @@ module.exports = [
     ticketUrl: null,
     price: null,
     lineup: ["Mevallar", "Caresmar", "Ladera", "Idilia", "Biela"],
-    poster: null,
+    poster: "/assets/posters/20260718-casalprosperitat.jpg",
     description: ""
   },
   {
@@ -38,7 +38,7 @@ module.exports = [
     ticketUrl: null,
     price: "Entrada gratuita",
     lineup: ["Mevallar"],
-    poster: null,
+    poster: "/assets/posters/20260918-poblenou.jpg",
     description: ""
   },
   {
