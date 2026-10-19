@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#aed4ea">
+  <meta name="description" content="Conciertos de Mevallar, pasados y próximos.">
+  <title>Conciertos — Mevallar</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="wordmark" href="/">Mevallar</a>
+    <nav aria-label="Navegación principal">
+      <a class="cloud-link" href="/">Inicio</a>
+      <a class="cloud-link" href="/conciertos/">Conciertos</a>
+      <a class="cloud-link" href="/merch/">Merch</a>
+      <a class="cloud-link" href="/links/">Links</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="section shows">
+      <div class="section-heading"><p class="eyebrow">PRÓXIMOS</p><h2>Ven a saludar.</h2></div>
+      {{upcomingCards}}
+    </section>
+
+    <section class="section shows">
+      <div class="section-heading"><p class="eyebrow">ANTERIORES</p><h2>Lo que ya<br>hemos vivido.</h2></div>
+      {{pastCards}}
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="flower flower-1"></div><div class="flower flower-2"></div><div class="flower flower-3"></div>
+    <div class="flower flower-4"></div><div class="flower flower-5"></div><div class="flower flower-6"></div>
+    <a class="wordmark" href="/">Mevallar</a>
+    <div class="socials">
+      <a class="cloud-link" href="https://www.instagram.com/mevallar_/">Instagram</a>
+      <a class="cloud-link" href="https://open.spotify.com/artist/1XJAfJmBUaSlnuha4jlX3F">Spotify</a>
+      <a class="cloud-link" href="https://www.youtube.com/@Mevallar">YouTube</a>
+      <a class="cloud-link" href="mailto:mevallargrupo@gmail.com">Email</a>
+    </div>
+    <small>© <span id="year">2026</span> Mevallar</small>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

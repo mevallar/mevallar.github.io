@@ -59,3 +59,14 @@ test('data/concerts.js has 5 valid concert entries', () => {
   assert.equal(poblenou.mapUrl, null);
   assert.equal(poblenou.poster, null);
 });
+
+test('templates have the required tokens', () => {
+  const concierto = fs.readFileSync(path.join(rootDir, 'templates', 'concierto.html'), 'utf8');
+  for (const token of ['venue', 'city', 'statusLabel', 'posterHtml', 'dateDisplay', 'timeDisplay', 'priceDisplay', 'lineupHtml', 'descriptionHtml', 'ticketLinkHtml', 'mapLinkHtml']) {
+    assert.match(concierto, new RegExp(`{{\\s*${token}\\s*}}`), `concierto.html is missing {{${token}}}`);
+  }
+
+  const listing = fs.readFileSync(path.join(rootDir, 'templates', 'conciertos-listing.html'), 'utf8');
+  assert.match(listing, /{{\s*upcomingCards\s*}}/);
+  assert.match(listing, /{{\s*pastCards\s*}}/);
+});
