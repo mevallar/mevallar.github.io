@@ -18,3 +18,24 @@ test('src/index.html has the landing page content', () => {
   assert.match(html, /\/links\//);
   assert.match(html, /mailto:mevallargrupo@gmail\.com/);
 });
+
+test('src/merch/index.html has the merch item and keeps site chrome', () => {
+  const html = fs.readFileSync(path.join(rootDir, 'src', 'merch', 'index.html'), 'utf8');
+  assert.match(html, /Camiseta "Anims"/);
+  assert.match(html, /15\s*€/);
+  assert.match(html, /Disponible en los conciertos/);
+  assert.match(html, /class="topbar"/);
+  assert.match(html, /class="site-footer"/);
+});
+
+test('src/links/index.html is standalone with all 6 link buttons', () => {
+  const html = fs.readFileSync(path.join(rootDir, 'src', 'links', 'index.html'), 'utf8');
+  assert.doesNotMatch(html, /class="topbar"/);
+  assert.doesNotMatch(html, /class="site-footer"/);
+  assert.match(html, /open\.spotify\.com\/artist\/1XJAfJmBUaSlnuha4jlX3F/);
+  assert.match(html, /instagram\.com\/mevallar_/);
+  assert.match(html, /youtube\.com\/@Mevallar/);
+  assert.match(html, /href="\/conciertos\/"/);
+  assert.match(html, /href="\/merch\/"/);
+  assert.match(html, /mailto:mevallargrupo@gmail\.com/);
+});
