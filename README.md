@@ -1,86 +1,90 @@
-# Mevallar — Web Oficial
+# Mevallar — Official Website
 
-Sitio estático de la banda Mevallar, publicado en **mevallar.com** vía GitHub
-Pages. Sin frameworks, sin dependencias npm: HTML5 + CSS3 a mano, y un script
-de Node (solo módulos nativos) que genera las páginas de conciertos.
+Static site for the band Mevallar, published at **mevallar.com** via GitHub
+Pages. No frameworks, no npm dependencies: hand-written HTML5 + CSS3, plus a
+Node script (built-in modules only) that generates the concert pages.
 
-## Mapa del sitio
+## Site map
 
 ```
 /                           Landing (hero + bio)
-/conciertos/                Listado: Próximos + Anteriores (generado)
-/conciertos/<slug>/         Una página por concierto (generada)
-/merch/                     Página de merchandising
-/links/                     Página tipo linktree, standalone (sin topbar/footer)
+/conciertos/                Listing: Upcoming + Past (generated)
+/conciertos/<slug>/         One page per concert (generated)
+/merch/                     Merchandise page
+/links/                     Linktree-style page, standalone (no topbar/footer)
 ```
 
-Formato de slug de concierto: `YYYYMMDD-venueslug` (p. ej. `20261106-almo2bar`).
-El estado "próximo"/"anterior" se calcula en el build comparando `date` con la
-fecha actual — nunca se marca a mano.
+Concert slug format: `YYYYMMDD-venueslug` (e.g. `20261106-almo2bar`).
+The "upcoming"/"past" status is computed at build time by comparing `date`
+with the current date — it is never set by hand.
 
-## Estructura del repo
+## Repo structure
 
-- `src/` — páginas escritas a mano y copiadas tal cual al build:
+- `src/` — hand-written pages, copied verbatim at build time:
   - `index.html` — landing.
-  - `style.css` — hoja de estilos única, compartida por todo el sitio.
+  - `style.css` — the single stylesheet, shared by the whole site.
   - `merch/index.html`, `links/index.html`.
-- `data/concerts.js` — fuente única de datos de conciertos (CommonJS, un
-  array de objetos `{ slug, date, time, venue, city, address, mapUrl,
-  ticketUrl, price, lineup, poster, description }`).
-- `templates/` — plantillas HTML con tokens `{{token}}`:
-  - `concierto.html` — página de un concierto.
-  - `conciertos-listing.html` — listado de próximos/anteriores.
-- `scripts/build-site.js` — build (ver detalle abajo). Sin dependencias npm,
-  solo `node:fs` / `node:path`.
-- `scripts/build-site.test.js` — tests con `node:test` / `node:assert/strict`.
-- `assets/posters/` — carteles de conciertos, nombrados `<slug>.jpg`.
-  Copiada tal cual a `dist/assets/`.
-- `.github/workflows/deploy.yml` — CI/CD: tests → build → publica `dist/`
-  como artefacto de GitHub Pages.
-- `dist/` — **resultado del build, nunca se versiona** (está en
-  `.gitignore`). Es lo único que GitHub Pages publica; `scripts/`,
-  `templates/`, `data/`, `src/` nunca son accesibles en el dominio público.
-- `docs/superpowers/` — spec y plan de implementación del rediseño actual
-  (histórico, útil como referencia de decisiones de diseño).
+- `data/concerts.js` — the single source of truth for concert data
+  (CommonJS, an array of `{ slug, date, time, venue, city, address, mapUrl,
+  ticketUrl, price, lineup, poster, description }` objects).
+- `templates/` — HTML templates with `{{token}}` placeholders:
+  - `concierto.html` — a single concert's page.
+  - `conciertos-listing.html` — the upcoming/past listing.
+- `scripts/build-site.js` — the build (see details below). No npm
+  dependencies, only `node:fs` / `node:path`.
+- `scripts/build-site.test.js` — tests with `node:test` /
+  `node:assert/strict`.
+- `assets/posters/` — concert posters, named `<slug>.jpg`. Copied verbatim
+  to `dist/assets/`.
+- `.github/workflows/deploy.yml` — CI/CD: tests → build → publish `dist/`
+  as the GitHub Pages artifact.
+- `dist/` — **build output, never committed** (it's in `.gitignore`). It is
+  the only thing GitHub Pages serves; `scripts/`, `templates/`, `data/`,
+  `src/` are never reachable on the public domain.
+- `AGENTS.md` — working rules for AI agents: the root file is the router,
+  and each source directory (`scripts/`, `src/`, `data/`, `templates/`)
+  has its own with directory-specific rules.
+- `docs/superpowers/` — spec and implementation plan of the current
+  redesign (historical, useful as a record of design decisions).
 
-## Sistema visual
+## Visual system
 
-Toda la paleta vive en `:root` de `src/style.css` como custom properties —
-cambiar el tema entero es editar ese único bloque:
+The whole palette lives in `:root` of `src/style.css` as custom properties —
+changing the entire theme means editing that single block:
 
-- Cielo: `--sky-top`, `--sky-bottom`, `--cloud`.
-- Césped/flores (footer): `--grass`, `--grass-dark`, `--flower-pink`,
+- Sky: `--sky-top`, `--sky-bottom`, `--cloud`.
+- Grass/flowers (footer): `--grass`, `--grass-dark`, `--flower-pink`,
   `--flower-orange`, `--flower-red`.
-- Neutros: `--ink`, `--paper`, `--muted`, `--line`.
-- Acentos: `--lilac` (acento principal: botones, eyebrow, enlaces),
+- Neutrals: `--ink`, `--paper`, `--muted`, `--line`.
+- Accents: `--lilac` (the main accent: buttons, eyebrow, links),
   `--mustard`, `--sage`, `--brown`.
 
-Componentes reutilizables clave:
+Key reusable components:
 
-- `.cloud-link` / `.cloud-link--accent` / `.cloud-link--big` — todo enlace
-  clicable del sitio se renderiza como una nube. Úsalo para cualquier botón
-  o link nuevo, no inventes otro estilo de botón.
-- `.site-footer` + `.flower-1`..`.flower-6` — footer de césped con flores,
-  en todas las páginas excepto `/links/`.
-- `.poster-placeholder` — caja con borde punteado para carteles o fotos que
-  todavía no existen.
-- `.concert-card` — tarjeta de la página de listado de conciertos.
-- `.linktree` — layout standalone de `/links/` (sin topbar ni footer).
+- `.cloud-link` / `.cloud-link--accent` / `.cloud-link--big` — every
+  clickable link on the site renders as a cloud. Use it for any new button
+  or link; don't invent another button style.
+- `.site-footer` + `.flower-1`..`.flower-6` — grass footer with flowers,
+  on every page except `/links/`.
+- `.poster-placeholder` — dashed-border box for posters or photos that
+  don't exist yet.
+- `.concert-card` — card on the concert listing page.
+- `.linktree` — standalone layout of `/links/` (no topbar or footer).
 
-## Desarrollo local
+## Local development
 
 ```bash
 node scripts/build-site.js
 ```
 
-Genera `dist/`. Las páginas usan rutas absolutas (`/conciertos/`, etc.), así
-que ábrelas con un servidor estático, no con `file://`:
+Generates `dist/`. Pages use root-relative paths (`/conciertos/`, etc.), so
+open them with a static server, not with `file://`:
 
 ```bash
 cd dist && python3 -m http.server 8080
 ```
 
-Luego visita `http://localhost:8080/`.
+Then visit `http://localhost:8080/`.
 
 ## Tests
 
@@ -88,35 +92,36 @@ Luego visita `http://localhost:8080/`.
 node --test scripts/build-site.test.js
 ```
 
-Cubren: contenido de las páginas escritas a mano, validez de
-`data/concerts.js`, tokens de las plantillas, y cada función del build
+They cover: content of the hand-written pages, validity of
+`data/concerts.js`, template tokens, and every build function
 (`renderTemplate`, `splitUpcomingPast`, `formatDateDisplay`,
 `renderPosterHtml`, `renderConciertoPage`, `renderCardHtml`,
-`renderListingPage`, `build`) incluyendo que `dist/` nunca contenga
-`scripts/`, `templates/`, `data/`, `src/` ni `.DS_Store`.
+`renderListingPage`, `build`) — including that `dist/` never contains
+`scripts/`, `templates/`, `data/`, `src/`, or `.DS_Store`.
 
-## Añadir o editar un concierto
+## Adding or editing a concert
 
-1. Añade/edita una entrada en `data/concerts.js` siguiendo la forma de las
-   existentes.
-2. Si hay cartel, guárdalo en `assets/posters/<slug>.jpg` y pon esa misma
-   ruta (`/assets/posters/<slug>.jpg`) en el campo `poster`. Si no hay
-   cartel aún, deja `poster: null` — se renderiza un placeholder.
-3. Vuelve a ejecutar `node scripts/build-site.js`. No hace falta tocar
-   ningún flag de "próximo"/"anterior", se calcula solo.
+1. Add/edit an entry in `data/concerts.js`, following the shape of the
+   existing ones.
+2. If there's a poster, save it to `assets/posters/<slug>.jpg` and set the
+   `poster` field to that same path (`/assets/posters/<slug>.jpg`). If
+   there's no poster yet, leave `poster: null` — a placeholder box gets
+   rendered.
+3. Run `node scripts/build-site.js` again. No need to touch any
+   "upcoming"/"past" flag — it's computed automatically.
 
-## Pendiente (requiere acción humana)
+## Pending (requires human action)
 
-- **Foto de la camiseta "Anims"** en `/merch/` — hoy es una caja
-  placeholder (`src/merch/index.html`), no está conectada a ningún archivo.
+- **Photo of the "Anims" t-shirt** on `/merch/` — currently a placeholder
+  box (`src/merch/index.html`), not connected to any file.
 - **GitHub Pages → Settings → Pages → Build and deployment → Source →
-  "GitHub Actions"** (no "Deploy from a branch"). Paso manual único,
-  obligatorio antes de que el workflow de despliegue funcione.
-- Esta rama (`site-redesign`) todavía no está mergeada a `main`.
+  "GitHub Actions"** (not "Deploy from a branch"). A one-time manual step,
+  required before the deploy workflow works.
+- This branch (`site-redesign`) is not yet merged to `main`.
 
-## Despliegue
+## Deployment
 
-Cada push a `main` lanza `.github/workflows/deploy.yml`: `node --test
-scripts/build-site.test.js` → `node scripts/build-site.js` → publica
-`dist/` vía GitHub Pages (`actions/configure-pages` +
+Every push to `main` runs `.github/workflows/deploy.yml`:
+`node --test scripts/build-site.test.js` → `node scripts/build-site.js` →
+publish `dist/` via GitHub Pages (`actions/configure-pages` +
 `actions/upload-pages-artifact` + `actions/deploy-pages`).
