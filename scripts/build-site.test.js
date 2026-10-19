@@ -39,3 +39,23 @@ test('src/links/index.html is standalone with all 6 link buttons', () => {
   assert.match(html, /href="\/merch\/"/);
   assert.match(html, /mailto:mevallargrupo@gmail\.com/);
 });
+
+test('data/concerts.js has 5 valid concert entries', () => {
+  const concerts = require(path.join(rootDir, 'data', 'concerts.js'));
+  assert.equal(concerts.length, 5);
+  for (const concert of concerts) {
+    assert.match(concert.slug, /^\d{8}-[a-z0-9]+$/);
+    assert.match(concert.date, /^\d{4}-\d{2}-\d{2}$/);
+    assert.ok(Array.isArray(concert.lineup) && concert.lineup.length > 0);
+  }
+
+  const almo2bar = concerts.find(c => c.slug === '20261106-almo2bar');
+  assert.equal(almo2bar.ticketUrl, 'https://entradium.com/events/la-mudanzza-de-la-mevallar');
+  assert.equal(almo2bar.price, '10 €');
+  assert.equal(almo2bar.poster, '/assets/posters/20261106-almo2bar.jpg');
+
+  const poblenou = concerts.find(c => c.slug === '20260918-poblenou');
+  assert.equal(poblenou.price, 'Entrada gratuita');
+  assert.equal(poblenou.mapUrl, null);
+  assert.equal(poblenou.poster, null);
+});

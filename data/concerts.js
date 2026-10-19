@@ -1,0 +1,72 @@
+module.exports = [
+  {
+    slug: "20260521-parallel62",
+    date: "2026-05-21",
+    time: null,
+    venue: "Parallel 62 Club",
+    city: "Barcelona",
+    address: "Avinguda del Paral·lel, 62, Ciutat Vella, 08001 Barcelona",
+    mapUrl: "https://maps.app.goo.gl/FXrbMW6h1b7Gvp4d6",
+    ticketUrl: null,
+    price: null,
+    lineup: ["Mevallar"],
+    poster: "/assets/posters/20260521-parallel62.jpg",
+    description: ""
+  },
+  {
+    slug: "20260718-casalprosperitat",
+    date: "2026-07-18",
+    time: null,
+    venue: "Casal de Joves de la Prosperitat",
+    city: "Barcelona",
+    address: "Pg Valldaura, 271-289, 08016 Barcelona",
+    mapUrl: "https://maps.app.goo.gl/5zxyFS8gzAX5DtyG6",
+    ticketUrl: null,
+    price: null,
+    lineup: ["Mevallar", "Caresmar", "Ladera", "Idilia", "Biela"],
+    poster: null,
+    description: ""
+  },
+  {
+    slug: "20260918-poblenou",
+    date: "2026-09-18",
+    time: null,
+    venue: "Fiesta Poblenou",
+    city: "Barcelona",
+    address: "Carrer Maria Aguiló, 107, Barcelona",
+    mapUrl: null,
+    ticketUrl: null,
+    price: "Entrada gratuita",
+    lineup: ["Mevallar"],
+    poster: null,
+    description: ""
+  },
+  {
+    slug: "20260924-urnieta",
+    date: "2026-09-24",
+    time: "23:00",
+    venue: "San Mielak · Urnietako Txosnagunea",
+    city: "Urnieta",
+    address: "Urnietako Txosnagunea, Urnieta 20130",
+    mapUrl: null,
+    ticketUrl: null,
+    price: "Entrada gratuita",
+    lineup: ["Mevallar", "Superlore", "Lappa", "Ganbara Studios"],
+    poster: "/assets/posters/20260924-urnieta.jpg",
+    description: ""
+  },
+  {
+    slug: "20261106-almo2bar",
+    date: "2026-11-06",
+    time: "20:30",
+    venue: "Almo2Bar",
+    city: "Barcelona",
+    address: "Carrer Bruniquer, 59-61 (Plaça Joanic), Barcelona",
+    mapUrl: "https://maps.app.goo.gl/FFxGjQKQMovCCWCn9",
+    ticketUrl: "https://entradium.com/events/la-mudanzza-de-la-mevallar",
+    price: "10 €",
+    lineup: ["La MudanzZa", "Mevallar"],
+    poster: "/assets/posters/20261106-almo2bar.jpg",
+    description: ""
+  }
+];
