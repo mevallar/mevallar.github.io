@@ -184,6 +184,7 @@ test('build() produces the full static site in dist/ and excludes build-only fil
   assert.equal(fs.existsSync(path.join(distDir, 'templates')), false);
   assert.equal(fs.existsSync(path.join(distDir, 'data')), false);
   assert.equal(fs.existsSync(path.join(distDir, 'src')), false);
+  assert.equal(fs.existsSync(path.join(distDir, 'AGENTS.md')), false);
 
   const almo2barHtml = fs.readFileSync(path.join(distDir, 'conciertos', '20261106-almo2bar', 'index.html'), 'utf8');
   assert.match(almo2barHtml, /Entradas/);
